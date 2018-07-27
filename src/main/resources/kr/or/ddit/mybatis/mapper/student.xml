@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student">
+  
+  <!-- 전체학생 정보 조회 -->
+  <select id="selectAllStudents" resultType="studentVo">
+    select * from student
+  </select>
+  
+  <!-- 학생 정보 조회 -->
+  <select id="getStudent" resultType="studentVo" parameterType="int">
+  	select * from student where id = #{id}
+  </select>
+  
+  <!-- 학생 정보 조회 -->
+  <select id="getStudentVo" resultType="studentVo" parameterType="studentVo">
+  	select * from student where id = #{id}
+  </select>
+  
+  <!-- 학생정보 페이징 조회 -->
+  <select id="getStudentPageList" resultType="studentVo" parameterType="map">
+  	SELECT *
+		FROM
+		(SELECT a.*,ROWNUM rn
+				FROM
+				(SELECT *
+					FROM student ORDER BY name) a)
+	WHERE RN BETWEEN (#{page}-1)*#{pageSize}+1 AND #{page}*#{pageSize}
+  </select>
+  
+  <select id="getStudentTotCnt" resultType="int">
+  	SELECT COUNT(*) FROM student
+  </select>
+  
+  <select id="getStudentInfo" parameterType="map" resultType="studentVo">
+  	select * from student where std_id = #{std_id} and pass = #{pass}
+  </select>
+  
+  <!-- 학생정보 업데이트 
+  	update student set 
+	picpath='D:\A_TeachingMaterial\7.JspSpring\fileUpload',
+	picname='6eee4161-94d1-4093-8f3d-c621e8c246f7', 
+	addr1='대전광역시 중구 중앙로 76', 
+	addr2='영민빌딩 2층 대덕인재 개발원', 
+	zipcd='34940',
+	name = '강병관'
+	where id =2;
+  
+  -->
+  <update id="studentUpdate" parameterType="studentVo">
+  	UPDATE student SET
+  		pic='Koala.jpg', 
+		picpath=#{picpath},
+		picname=#{picname}, 
+		addr1=#{addr1}, 
+		addr2=#{addr2}, 
+		zipcd=#{zipcd},
+		name=#{name}
+	WHERE id = #{id}
+  </update>
+  
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="file">
+	<select id="getFile" parameterType="int" resultType="fileVo">
+		select * from file where file_id = #{file_id}
+	</select>
+	
+	<insert id="insertFile" parameterType="fileVo">
+		insert into file_id, board_num, file_path, file_name
+		values(#{file_id}, board_file_seq.nextval, #{file_path}, #{file_name})
+	</insert>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+	<select id="selectAllBoard" resultType="boardVo">
+		SELECT * FROM board
+	</select>
+	
+	<select id="getBoardPageList" resultType="boardVo" parameterType="map">
+  	SELECT *
+		FROM
+		(SELECT a.*,ROWNUM rn
+				FROM
+				(SELECT *
+					FROM board ) a)
+	WHERE RN BETWEEN (#{page}-1)*#{pageSize}+1 AND #{page}*#{pageSize}
+    </select>
+    
+    <select id="getBoardTotCnt" resultType="int">
+  		SELECT COUNT(*) FROM board
+  	</select>
+  	
+  	<select id="getBoard" resultType="boardVo" parameterType="int">
+  		select * from board where board_num = #{board_num}
+  	</select>
+  	
+  	<insert id="insertBoard" parameterType="boardVo">
+  		insert into board(board_num, board_title, board_content, board_reg, board_file, board_filename, board_delete, std_id)
+  		values(board_seq.nextval, #{board_title}, #{board_content}, sysdate, #{board_file}, #{board_filename}, #{board_delete}, #{std_id})
+  	</insert>
+  	
+  	<update id="updateBoard" parameterType="boardVo">
+  		update board set 
+	  		board_title = #{board_title}, 
+	  		board_content = #{board_content},
+	  		board_file = #{board_file}
+	  	where BOARD_NUM = #{board_num}
+  	</update>
+  	
+  	<delete id="deleteBoard" parameterType="int">
+  		delete from board where board_num = #{board_num}
+  	</delete>
+</mapper>
